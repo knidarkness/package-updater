@@ -22,7 +22,7 @@ When you have installed the package you should add the app [package-updater](htt
 
 After that you (as admin of the application) can use it as following:
 ```
-node ./src/main.js nickname/repository package-name package-version
+node ./src/main.js --repository nickname/repository --package package-name --ver package-version
 ```
 For example, `node ./src/main.js -r knidarkness/test-repo -p express -v 1.51.16` will try to access repository knidarkness/test-repo and update version of express in package.json to 4.17.10.
 
