@@ -1,22 +1,20 @@
 const github = require('octonode');
-const { getInstallationAccessToken } = require('./../auth');
+const { getInstallationAccessToken } = require('./auth');
 
 
-const getPackageJSON = async repo => {
+const getPackageJSONAsObject = async repo => {
     const data = await repo.contentsAsync('package.json', 'master');
     const packageJSONJson = JSON.parse(Buffer.from(data[0].content, 'base64').toString());
     return packageJSONJson;
 };
 
-const updateVersion = (packageJSONObject, packageName, newPackageVersion) => ({
+const updatePackageJSONObject = (packageJSONObject, packageName, newPackageVersion) => ({
     ...packageJSONObject,
     dependencies: {
         ...packageJSONObject.dependencies,
         [packageName]: newPackageVersion
     }
 })
-
-const getPackageJSONString = packageJSONObject => JSON.stringify(packageJSONObject, null, 2);
 
 const createBranch = async (repo, packageName, newPackageVersion) => {
     const commits = await repo.commitsAsync();
@@ -27,7 +25,12 @@ const createBranch = async (repo, packageName, newPackageVersion) => {
 
 const commitUpdates = async (repo, content, packageName, newPackageVersion, branch) => {
     const sha = (await repo.contentsAsync('package.json', branch))[0].sha
-    await repo.updateContentsAsync('package.json', `Updated ${packageName} to version ${newPackageVersion}`, content, sha, branch);
+    await repo.updateContentsAsync('package.json', 
+        `Updated ${packageName} to version ${newPackageVersion}`,
+        content,
+        sha,
+        branch
+    );
 };
 
 const createPR = async (repo, packageName, newPackageVersion, branch, targetBranch='master') => {
@@ -40,17 +43,21 @@ const createPR = async (repo, packageName, newPackageVersion, branch, targetBran
 };
 
 const updateRepo = async (repoLink, packageName, newPackageVersion) => {
-    const installationToken = await getInstallationAccessToken('knidarkness', 'test-repo');
+    const userName = repoLink.split('/')[0];
+    const repoName = repoLink.split('/')[1];
+    
+    const installationToken = await getInstallationAccessToken(userName, repoName);
     const githubAppClient = github.client(installationToken);
     const repo = githubAppClient.repo(repoLink);
     
-    const data = await getPackageJSON(repo);
-    const updatedData = updateVersion(data, packageName, newPackageVersion);
-    const updateFileContents = getPackageJSONString(updatedData);
-    const branch = await createBranch(repo, packageName, newPackageVersion);
+    const data = await getPackageJSONAsObject(repo);
+    const updatedData = updatePackageJSONObject(data, packageName, newPackageVersion);
+    const updateFileContents = JSON.stringify(updatedData, null, 2);
 
-    await commitUpdates(repo, updateFileContents, packageName, newPackageVersion, branch);
-    await createPR(repo, packageName, newPackageVersion, branch);
+    const branchName = await createBranch(repo, packageName, newPackageVersion);
+
+    await commitUpdates(repo, updateFileContents, packageName, newPackageVersion, branchName);
+    await createPR(repo, packageName, newPackageVersion, branchName);
 };
 
 module.exports = {

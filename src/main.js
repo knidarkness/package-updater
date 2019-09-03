@@ -1,16 +1,21 @@
 require('dotenv').config();
 const { updateRepo } = require('./version-updater');
 
-const validateArguments = () => {
-    if (process.argv.length !== 5) {
-        console.error('Missing required arguments: repository address, package name, and new package version');
-        process.exit(-1);
-    }
-};
+const args = require('yargs')
+    .option('repository', {
+        alias: 'r',
+        require: true,
+        description: 'username/repository, which should be parsed (e.g. knidarkness/package-updater)'
+    })
+    .option('package', {
+        alias: 'p',
+        description: 'A name of the package to update'
+    })
+    .option('ver', {
+        alias: 'v',
+        description: 'A version to which package should be updated'
+    })
+    .demandOption(['r', 'p', 'v'])
+    .argv;
 
-const main = async () => {
-    validateArguments();
-    await updateRepo(process.argv[2], process.argv[3], process.argv[4]);
-};
-
-main();
+updateRepo(args.repository, args.package, args.ver);

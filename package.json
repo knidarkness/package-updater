@@ -20,6 +20,7 @@
     "@octokit/app": "^4.1.0",
     "dotenv": "^8.1.0",
     "node-fetch": "^2.6.0",
-    "octonode": "^0.9.5"
+    "octonode": "^0.9.5",
+    "yargs": "^14.0.0"
   }
 }
