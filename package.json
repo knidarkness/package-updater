@@ -1,0 +1,23 @@
+{
+  "name": "package-updater",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "node src/main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/knidarkness/package-updater.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/knidarkness/package-updater/issues"
+  },
+  "homepage": "https://github.com/knidarkness/package-updater#readme",
+  "dependencies": {
+    "node-fetch": "^2.6.0",
+    "octonode": "^0.9.5"
+  }
+}
