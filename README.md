@@ -24,7 +24,7 @@ After that you (as admin of the application) can use it as following:
 ```
 node start nickname/repository package-name package-version
 ```
-For example, `node start knidarkness/test-repo express 4.17.10` will try to access repository knidarkness/test-repo and update version of express in package.json to 4.17.10.
+For example, `node .\src\main.js -r knidarkness/test-repo -p express -v 1.51.16` will try to access repository knidarkness/test-repo and update version of express in package.json to 4.17.10.
 
 
 ## License
