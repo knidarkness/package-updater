@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/knidarkness/package-updater#readme",
   "dependencies": {
+    "@octokit/app": "^4.1.0",
+    "dotenv": "^8.1.0",
     "node-fetch": "^2.6.0",
     "octonode": "^0.9.5"
   }
