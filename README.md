@@ -10,7 +10,7 @@ To run this app you should follow such steps:
 2. Install packages by `npm install`
 3. Create .env file with following contents:
 ```
-PRIVATE_KEY="-----BEGIN RSA PRIVATE\n... your private key for GithubApp goes here"
+PRIVATE_KEY="-----BEGIN RSA PRIVATE\n... your private key for GithubApp"
 GITHUB_APP_IDENTIFIER=your app id
 GITHUB_WEBHOOK_SECRET=your webhook secret
 ```
